@@ -17,7 +17,7 @@ export function Login(){
         setError("")
       try {
         await handleLogin(username,password);
-        navigate("/");
+        navigate("/Products");
 
         }catch{
             setError("Invalid username or password");
