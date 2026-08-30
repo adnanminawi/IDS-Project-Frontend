@@ -80,6 +80,13 @@ export interface Deployment {
   supportTier?: string;
   clientNotes?: string;
 }
+
+export interface User{
+  id: number;
+  username: string;
+  role : string;
+  isActive : boolean;
+}
 export interface CreateClient{
   name:string;
   country?: string;
@@ -109,4 +116,19 @@ export interface CreateTeamMember {
   status?: string;
   team_id?: number;
   roleInTeam?: string;
+}
+export interface CreateDeployment {
+  client_id: number;
+  product_id: number;
+  version?: string;
+  goLiveDate?: string;
+  status?: string;
+  supportTier?: string;
+  clientNotes?: string;
+}
+export interface CreateUser{
+  username : string;
+  password : string;
+  role : string;
+  isActive : boolean;
 }
