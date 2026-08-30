@@ -6,6 +6,10 @@ import { Clients } from "./pages/Clients";
 import { Layout } from "./components/Layout"; 
 import { ProductDetails } from "./pages/ProductDetails";
 import { ClientDetails } from "./pages/ClientDetails";
+import { Teams } from "./pages/Team";
+import { TeamDetails } from "./pages/TeamDetails";
+import { Deployments } from "./pages/Deployments";
+import { Users } from "./pages/Users";
 function App() {
   return (
     <Routes>
@@ -33,6 +37,17 @@ function App() {
         </Layout>
     </ProtectedRoute>}/>
 
+    <Route path="/deployments" element={
+    <ProtectedRoute><Layout><Deployments /></Layout></ProtectedRoute>
+    } />
+
+    <Route path="/teams" element={
+    <ProtectedRoute><Layout><Teams /></Layout></ProtectedRoute>
+    } />
+    <Route path="/users" element={
+    <ProtectedRoute><Layout><Users /></Layout></ProtectedRoute>
+} />
+
 
     <Route path="/products/:id" element={
     <ProtectedRoute>
@@ -40,15 +55,21 @@ function App() {
             <ProductDetails />
         </Layout>
     </ProtectedRoute>
-} />
+    } />
 
-<Route path="/clients/:id" element={
+    <Route path="/clients/:id" element={
     <ProtectedRoute>
         <Layout>
             <ClientDetails />
         </Layout>
     </ProtectedRoute>
-} />
+    } />
+
+
+    <Route path="/teams/:id" element={
+    <ProtectedRoute><Layout><TeamDetails /></Layout></ProtectedRoute>
+    } />
+
     </Routes>
   );
 }
