@@ -132,3 +132,33 @@ export interface CreateUser{
   role : string;
   isActive : boolean;
 }
+
+export interface DashboardStats {
+  totalProducts: number;
+  totalClients: number;
+  totalDeployments: number;
+  totalTeams: number;
+}
+export interface DeploymentEnvironment {
+    id: number;
+    deployment_id: number;
+    name?: string;
+    type?: string;
+    purpose?: string;
+    serverName?: string;
+    operatingSystem?: string;
+    applicationUrl?: string;
+    databaseInfo?: string;
+    monitoringLink?: string;
+    accessInfo?: string;
+    notes?: string;
+}
+export interface CreateResponsibility {
+    team_id: number;
+    description?: string;
+}
+export interface CreateModule {
+    name: string;
+    description?: string;
+    status?: string;
+}

@@ -1,6 +1,6 @@
-import { useState, useEffect, use } from "react";
-import { type CreateClient, type Client } from "../types";
-import { getClient, createClient, getClients, deleteClient, updateClient } from "../api/clients";
+import { useState, useEffect } from "react";
+import {  type Client } from "../types";
+import { createClient, getClients, deleteClient, updateClient } from "../api/clients";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
@@ -17,6 +17,7 @@ export function Clients(){
         notes : ""
     });
     const [editId, setEditId] = useState<number | null>(null);
+    const [search, setSearch] = useState("");
 
     useEffect(()=>{
         async function load() {
@@ -45,7 +46,7 @@ export function Clients(){
                     notes : ""
             });
             } catch {
-                alert("Failed to save product");
+                alert("Failed to save client");
             }
         }
     async function handleDelete(id:number) {
@@ -67,13 +68,25 @@ export function Clients(){
         });
         setEditId(client.id);
     }
+    const filteredClients = clients.filter((c) =>
+    c.name.toLowerCase().includes(search.toLowerCase()) ||
+    (c.country ?? "").toLowerCase().includes(search.toLowerCase()) ||
+    (c.status ?? "").toLowerCase().includes(search.toLowerCase())
+);
+
     if (loading) return <p>Loading...</p>;
 
     return(
    
    <div className="max-w-6xl mx-auto">
             <h1 className="text-2xl font-bold text-gray-800 mb-6">Clients</h1>
-
+                <input
+                type="text"
+                placeholder="Search clients..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="mb-4 w-full max-w-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+                
             <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
                 <table className="w-full text-sm">
                     <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
@@ -85,7 +98,7 @@ export function Clients(){
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                        {clients.map((c) => (
+                        {filteredClients.map((c) => (
                             <tr key={c.id} className="hover:bg-gray-50">
                                 <td className="px-4 py-3 font-medium text-gray-800"><Link to={`/clients/${c.id}`} className="text-blue-600 hover:underline">{c.name} </Link></td>
                                 <td className="px-4 py-3"> <span className="inline-block rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs"> {c.status}</span> </td>

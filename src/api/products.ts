@@ -1,5 +1,5 @@
         import api from "./axios";
-        import { type Product , type CreateProduct, type Module, type Deployment, type Responsibility, type Documentation, type Repository} from "../types";
+        import { type Product , type CreateProduct, type Module, type Deployment, type Responsibility, type Documentation, type Repository, type CreateResponsibility, type CreateModule } from "../types";
 
         export async function getProducts(): Promise<Product[]> {
             const res = await api.get<Product[]>("/products");
@@ -38,5 +38,12 @@
         export async function getProductRepositories(id:number): Promise<Repository[]> {
             const res = await api.get<Repository[]>(`/products/${id}/repositories`);
             return res.data;
-            
+        }
+        export async function assignTeam(id: number , data : CreateResponsibility): Promise<number> {
+            const res = await api.post<number>(`/products/${id}/responsibilities`, data);
+            return res.data;
+        }
+        export async function createModule(productId: number, data: CreateModule): Promise<number> {
+            const res = await api.post<number>(`/products/${productId}/modules`, data);
+            return res.data;
         }
