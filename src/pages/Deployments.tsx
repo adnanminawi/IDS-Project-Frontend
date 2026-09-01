@@ -23,6 +23,7 @@ export function Deployments(){
         supportTier: "", 
         clientNotes: "" 
     });
+    const [search, setSearch] = useState("");
 
 
     useEffect(()=> {
@@ -100,11 +101,26 @@ function clientName(id: number) {
 function productName(id: number) {
         return products.find((p) => p.id === id)?.name ?? `Product ${id}`;
     }
+
+    const filteredDeployments = deployments.filter((d) =>
+    clientName(d.client_id).toLowerCase().includes(search.toLowerCase()) ||
+    productName(d.product_id).toLowerCase().includes(search.toLowerCase()) ||
+    (d.status ?? "").toLowerCase().includes(search.toLowerCase()) ||
+    (d.version ?? "").toLowerCase().includes(search.toLowerCase())
+);
+
 if (loading) return <p className="p-6 text-gray-500">Loading...</p>;
 
     return (
         <div className="max-w-6xl mx-auto">
             <h1 className="text-2xl font-bold text-gray-800 mb-6">Deployments</h1>
+            <input
+    type="text"
+    placeholder="Search deployments..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="mb-4 w-full max-w-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+/>
 
             <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm">
                 <table className="w-full text-sm">
@@ -119,7 +135,7 @@ if (loading) return <p className="p-6 text-gray-500">Loading...</p>;
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
-                        {deployments.map((d) => (
+                        {filteredDeployments.map((d) => (
                             <tr key={d.id} className="hover:bg-gray-50">
                                 <td className="px-4 py-3 font-medium">
                                     <Link to={`/deployments/${d.id}`} className="text-blue-600 hover:underline">

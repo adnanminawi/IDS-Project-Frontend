@@ -1,5 +1,5 @@
 import api from "./axios";
-import { type Deployment, type CreateDeployment } from "../types";
+import { type Deployment, type CreateDeployment, type Module, type DeploymentEnvironment  } from "../types";
 
 export async function getDeployments(): Promise<Deployment[]> {
     const res = await api.get<Deployment[]>("/deployments");
@@ -18,4 +18,12 @@ export async function updateDeployment(id: number, data: CreateDeployment): Prom
 }
 export async function deleteDeployment(id: number): Promise<void> {
     await api.delete(`/deployments/${id}`);
+}
+export async function getDeploymentEnvironments(id: number): Promise<DeploymentEnvironment[]> {
+    const res = await api.get<DeploymentEnvironment[]>(`/deployments/${id}/environments`);
+    return res.data;
+}
+export async function getDeploymentModules(id: number): Promise<Module[]> {
+    const res = await api.get<Module[]>(`/deployments/${id}/modules`);
+    return res.data;
 }

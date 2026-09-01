@@ -10,18 +10,12 @@ import { Teams } from "./pages/Team";
 import { TeamDetails } from "./pages/TeamDetails";
 import { Deployments } from "./pages/Deployments";
 import { Users } from "./pages/Users";
+import { Dashboard } from "./pages/Dashboard";
+import { DeploymentDetails } from "./pages/DeploymentDetails";
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <div>Dashboard placeholder — you're logged in!</div>
-          </ProtectedRoute>
-        }
-      />
 
       <Route path="/products"
       element={ <ProtectedRoute>
@@ -47,7 +41,9 @@ function App() {
     <Route path="/users" element={
     <ProtectedRoute><Layout><Users /></Layout></ProtectedRoute>
 } />
-
+<Route path="/" element={
+    <ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>
+} />
 
     <Route path="/products/:id" element={
     <ProtectedRoute>
@@ -70,6 +66,9 @@ function App() {
     <ProtectedRoute><Layout><TeamDetails /></Layout></ProtectedRoute>
     } />
 
+<Route path="/deployments/:id" element={
+    <ProtectedRoute><Layout><DeploymentDetails /></Layout></ProtectedRoute>
+} />
     </Routes>
   );
 }
