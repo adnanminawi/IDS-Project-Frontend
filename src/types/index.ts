@@ -2,6 +2,8 @@ export interface LoginResponse {
   token: string;
   username: string;
   role: string;
+  position?: string,
+  teamId? : string
 }
 
 export interface Product {
@@ -63,12 +65,13 @@ export interface Team{
 export interface TeamMember{
   id : number;
   name : string;
-  job?: string;
   department?: string;
   email?: string;
   status?: string;
   team_id?: number;
   roleInTeam?: string;
+  position? : string;
+  managerId?: number;
 }
 export interface Deployment {
   id: number;
@@ -110,12 +113,13 @@ export interface CreateTeam {
 }
 export interface CreateTeamMember {
   name: string;
-  job?: string;
   department?: string;
   email?: string;
   status?: string;
   team_id?: number;
   roleInTeam?: string;
+  position?: string;
+  managerId?: number;
 }
 export interface CreateDeployment {
   client_id: number;

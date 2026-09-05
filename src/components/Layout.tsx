@@ -22,6 +22,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 {role === "Admin" && (
                     <Link to="/users" className="hover:text-gray-300">Users</Link>
                 )}
+                <Link to="/chart" className="hover:text-gray-300">Chart</Link>
 
                 <span className="ml-auto text-sm text-gray-300">
                     {username} ({role})

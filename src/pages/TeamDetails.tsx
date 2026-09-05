@@ -15,7 +15,7 @@ export function TeamDetails() {
     const [loading, setLoading] = useState(true);
     const [editId, setEditId] = useState<number | null>(null);
     const [form, setForm] = useState<CreateTeamMember>({
-        name: "", job: "", department: "", email: "", status: "", roleInTeam: "", team_id: teamId,
+        name: "", position: "", department: "", email: "", status: "", roleInTeam: "", team_id: teamId,
     });
 
     async function load() {
@@ -33,7 +33,7 @@ export function TeamDetails() {
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         try {
-            const data = { ...form, team_id: teamId };   
+            const data = { ...form, team_id: teamId, managerId: teamLeader ? teamLeader.id : undefined };   
             if (editId) {
                 await updateTeamMember(editId, data);
             } else {
@@ -41,7 +41,7 @@ export function TeamDetails() {
             }
             await load();
             setEditId(null);
-            setForm({ name: "", job: "", department: "", email: "", status: "", roleInTeam: "", team_id: teamId });
+            setForm({ name: "", position: "", department: "", email: "", status: "", roleInTeam: "", team_id: teamId });
         } catch {
             alert("Failed to save member");
         }
@@ -50,7 +50,7 @@ export function TeamDetails() {
     function handleEdit(member: TeamMember) {
         setForm({
             name: member.name,
-            job: member.job ?? "",
+            position: member.position ?? "",
             department: member.department ?? "",
             email: member.email ?? "",
             status: member.status ?? "",
@@ -71,6 +71,7 @@ export function TeamDetails() {
 
     if (loading) return <p className="p-6 text-gray-500">Loading...</p>;
     if (!team) return <p className="p-6">Team not found.</p>;
+    const teamLeader = members.find((m) => m.roleInTeam === "Team Leader");
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">
@@ -87,7 +88,7 @@ export function TeamDetails() {
                             <tr>
                                 <th className="px-3 py-2 text-left">Name</th>
                                 <th className="px-3 py-2 text-left">Role in Team</th>
-                                <th className="px-3 py-2 text-left">Job</th>
+                                <th className="px-3 py-2 text-left">Position</th>
                                 <th className="px-3 py-2 text-left">Department</th>
                                 <th className="px-3 py-2 text-left">Email</th>
                                 <th className="px-3 py-2 text-left">Status</th>
@@ -100,7 +101,7 @@ export function TeamDetails() {
                                 <tr key={m.id} className="hover:bg-gray-50">
                                     <td className="px-3 py-2 font-medium">{m.name}</td>
                                     <td className="px-3 py-2">{m.roleInTeam}</td>
-                                    <td className="px-3 py-2 text-gray-600">{m.job}</td>
+                                    <td className="px-3 py-2 text-gray-600">{m.position}</td>
                                     <td className="px-3 py-2 text-gray-600">{m.department}</td>
                                     <td className="px-3 py-2 text-gray-600">{m.email}</td>
                                     <td className="px-3 py-2 text-gray-600">{m.status}</td>
@@ -125,7 +126,7 @@ export function TeamDetails() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <input className="border border-gray-300 rounded px-3 py-2" type="text" placeholder="Name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
                         <input className="border border-gray-300 rounded px-3 py-2" type="text" placeholder="Role in Team" value={form.roleInTeam} onChange={(e) => setForm({ ...form, roleInTeam: e.target.value })} />
-                        <input className="border border-gray-300 rounded px-3 py-2" type="text" placeholder="Job" value={form.job} onChange={(e) => setForm({ ...form, job: e.target.value })} />
+                        <input className="border border-gray-300 rounded px-3 py-2" type="text" placeholder="Position" value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} />
                         <input className="border border-gray-300 rounded px-3 py-2" type="text" placeholder="Department" value={form.department} onChange={(e) => setForm({ ...form, department: e.target.value })} />
                         <input className="border border-gray-300 rounded px-3 py-2" type="email" placeholder="Email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
                         <input className="border border-gray-300 rounded px-3 py-2" type="text" placeholder="Status" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} />
@@ -135,7 +136,7 @@ export function TeamDetails() {
                             {editId ? "Update Member" : "Add Member"}
                         </button>
                         {editId && (
-                            <button type="button" onClick={() => { setEditId(null); setForm({ name: "", job: "", department: "", email: "", status: "", roleInTeam: "", team_id: teamId }); }} className="rounded bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400">
+                            <button type="button" onClick={() => { setEditId(null); setForm({ name: "", position: "", department: "", email: "", status: "", roleInTeam: "", team_id: teamId }); }} className="rounded bg-gray-300 px-4 py-2 text-gray-700 hover:bg-gray-400">
                                 Cancel
                             </button>
                         )}
