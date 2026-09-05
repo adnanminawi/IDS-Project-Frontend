@@ -12,6 +12,7 @@ import { Deployments } from "./pages/Deployments";
 import { Users } from "./pages/Users";
 import { Dashboard } from "./pages/Dashboard";
 import { DeploymentDetails } from "./pages/DeploymentDetails";
+import { Chart } from "./pages/Chart";
 function App() {
   return (
     <Routes>
@@ -43,6 +44,10 @@ function App() {
 } />
 <Route path="/" element={
     <ProtectedRoute><Layout><Dashboard /></Layout></ProtectedRoute>
+} />
+
+<Route path="/chart" element={
+    <ProtectedRoute><Layout><Chart /></Layout></ProtectedRoute>
 } />
 
     <Route path="/products/:id" element={

@@ -1,6 +1,11 @@
 import api from "./axios";
 import { type TeamMember, type CreateTeamMember } from "../types";
 
+
+export async function getAllTeamMembers(): Promise<TeamMember[]> {
+    const res = await api.get<TeamMember[]>("/teammembers");
+    return res.data;
+}
 export async function getTeamMember(id: number): Promise<TeamMember> {
     const res = await api.get<TeamMember>(`/teammembers/${id}`);
     return res.data;
