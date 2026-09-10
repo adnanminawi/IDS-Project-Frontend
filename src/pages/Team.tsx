@@ -3,23 +3,14 @@ import { Link } from "react-router-dom";
 import { type Team, type CreateTeam } from "../types";
 import { getTeams, createTeam, updateTeam, deleteTeam } from "../api/teams";
 import { useAuth } from "../context/AuthContext";
-
+import { useQuery,useQueryClient } from "@tanstack/react-query";
 export function Teams() {
     const { role, position } = useAuth();
-
-    const [teams, setTeams] = useState<Team[]>([]);
-    const [loading, setLoading] = useState(true);
+      const queryClient = useQueryClient();
+    const { data: teams = [], isLoading } = useQuery({queryKey: ["teams"],queryFn: getTeams,staleTime: 5 * 60 * 1000,});
     const [form, setForm] = useState<CreateTeam>({ name: "" });
     const [editId, setEditId] = useState<number | null>(null);
 
-    useEffect(() => {
-        async function load() {
-            const data = await getTeams();
-            setTeams(data);
-            setLoading(false);
-        }
-        load();
-    }, []);
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -29,8 +20,7 @@ export function Teams() {
             } else {
                 await createTeam(form);
             }
-            const data = await getTeams();
-            setTeams(data);
+            queryClient.invalidateQueries({ queryKey: ["teams"] });
             setEditId(null);
             setForm({ name: "" });
         } catch {
@@ -46,15 +36,13 @@ export function Teams() {
     async function handleDelete(id: number) {
         try {
             await deleteTeam(id);
-            const data = await getTeams();
-            setTeams(data);
+            queryClient.invalidateQueries({ queryKey: ["teams"] });
         } catch {
             alert("Cannot delete team (it may have members)");
         }
     }
 
-    if (loading) return <p className="p-6 text-gray-500">Loading...</p>;
-
+    if (isLoading) return <p className="p-6 text-gray-500">Loading...</p>;
     return (
         <div className="max-w-3xl mx-auto">
             <h1 className="text-2xl font-bold text-gray-800 mb-6">Teams</h1>
