@@ -103,11 +103,11 @@ export function Clients(){
                                 <td className="px-4 py-3 font-medium text-gray-800"><Link to={`/clients/${c.id}`} className="text-blue-600 hover:underline">{c.name} </Link></td>
                                 <td className="px-4 py-3"> <span className="inline-block rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs"> {c.status}</span> </td>
                                 <td className="px-4 py-3 font-medium text-gray-800">{c.country}</td>
-                                
+                                {(role === "Admin" || position === "Manager" || position === "CEO" || position ==="Project Manager") &&(
                                     <td className="px-4 py-3 space-x-2">
                                         <button onClick={() => handleEdit(c)} className="rounded bg-amber-500 px-3 py-1 text-white text-xs hover:bg-amber-600"> Edit </button>
                                         <button onClick={() => handleDelete(c.id)} className="rounded bg-red-600 px-3 py-1 text-white text-xs hover:bg-red-700"> Delete </button>
-                                    </td>
+                                    </td>)}
                             </tr>
                         ))}
                     </tbody>
