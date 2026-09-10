@@ -89,6 +89,7 @@ export interface User{
   username: string;
   role : string;
   isActive : boolean;
+  teamMember_id? : number;
 }
 export interface CreateClient{
   name:string;
@@ -135,6 +136,7 @@ export interface CreateUser{
   password : string;
   role : string;
   isActive : boolean;
+  TeamMember_id? : number;
 }
 
 export interface DashboardStats {

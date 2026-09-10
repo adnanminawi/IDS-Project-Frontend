@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import type { ReactNode } from "react";
 
 export function Layout({ children }: { children: ReactNode }) {
-    const { username, role, logout } = useAuth();
+    const { username, position, role, logout } = useAuth();
     const navigate = useNavigate();
 
     function handleLogout() {

@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 export function Clients(){
-    const {role} = useAuth();
+    const {role, position} = useAuth();
 
     const [clients, setClients] = useState<Client[]>([]);
     const [loading, setLoading] = useState(true);
@@ -94,7 +94,7 @@ export function Clients(){
                             <th className="px-4 py-3 text-left">Name</th>
                             <th className="px-4 py-3 text-left">status</th>
                             <th className="px-4 py-3 text-left">Country</th>
-                            {role === "Admin" && <th className="px-4 py-3 text-left">Actions</th>}
+                            {(role === "Admin" || position === "Manager" || position === "CEO" || position ==="Project Manager") && <th className="px-4 py-3 text-left">Actions</th>}
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -104,20 +104,17 @@ export function Clients(){
                                 <td className="px-4 py-3"> <span className="inline-block rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs"> {c.status}</span> </td>
                                 <td className="px-4 py-3 font-medium text-gray-800">{c.country}</td>
                                 
-                                
-                                {role === "Admin" && (
                                     <td className="px-4 py-3 space-x-2">
                                         <button onClick={() => handleEdit(c)} className="rounded bg-amber-500 px-3 py-1 text-white text-xs hover:bg-amber-600"> Edit </button>
                                         <button onClick={() => handleDelete(c.id)} className="rounded bg-red-600 px-3 py-1 text-white text-xs hover:bg-red-700"> Delete </button>
                                     </td>
-                                )}
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
 
-            {role === "Admin" && (
+            {(role === "Admin" || position === "Manager" || position === "CEO" || position === "Project Manager") && (
                 <form onSubmit={handleSubmit} className="mt-8 bg-white rounded-lg border border-gray-200 shadow-sm p-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">
                         {editId ? "Edit Client" : "Add Client"}
