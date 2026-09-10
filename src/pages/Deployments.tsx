@@ -7,7 +7,7 @@ import { getProducts } from "../api/products";
 import { useAuth } from "../context/AuthContext";
 
 export function Deployments(){
-    const {role} = useAuth();
+    const {role, position} = useAuth();
 
     const [deployments, setDeployments] = useState<Deployment[]>([]);
     const [loading, setLoading] = useState(false);
@@ -131,7 +131,7 @@ if (loading) return <p className="p-6 text-gray-500">Loading...</p>;
                             <th className="px-4 py-3 text-left">Version</th>
                             <th className="px-4 py-3 text-left">Status</th>
                             <th className="px-4 py-3 text-left">Go Live Date</th>
-                            {role === "Admin" && <th className="px-4 py-3 text-left">Actions</th>}
+                            {(role==="Admin" || position != "Developer" && position != "Team Leader") && <th className="px-4 py-3 text-left">Actions</th>}
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -148,7 +148,7 @@ if (loading) return <p className="p-6 text-gray-500">Loading...</p>;
                                     <span className="inline-block rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs">{d.status}</span>
                                 </td>
                                 <td className="px-4 py-3 text-gray-600">{d.goLiveDate ? d.goLiveDate.split("T")[0] : ""}</td>
-                                {role === "Admin" && (
+                                {(role==="Admin" || position != "Developer" && position != "Team Leader") && (
                                     <td className="px-4 py-3 space-x-2">
                                         <button onClick={() => handleEdit(d)} className="rounded bg-amber-500 px-3 py-1 text-white text-xs hover:bg-amber-600">Edit</button>
                                         <button onClick={() => handleDelete(d.id)} className="rounded bg-red-600 px-3 py-1 text-white text-xs hover:bg-red-700">Delete</button>
@@ -160,7 +160,7 @@ if (loading) return <p className="p-6 text-gray-500">Loading...</p>;
                 </table>
             </div>
 
-            {role === "Admin" && (
+            {(role==="Admin" || position != "Developer" && position != "Team Leader") && (
                 <form onSubmit={handleSubmit} className="mt-8 bg-white rounded-lg border border-gray-200 shadow-sm p-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">
                         {editId ? "Edit Deployment" : "Add Deployment"}

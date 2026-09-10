@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 export function Products(){
 
-const { role } = useAuth();
+const { role, position } = useAuth();
 
     const [products, setPorducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
@@ -86,7 +86,7 @@ const { role } = useAuth();
         criticality : "",
         technologies : "",
         notes : "",
-    });
+    }); 
     } catch {
         alert("Failed to save product");
     }
@@ -141,7 +141,7 @@ if (loading) return <p>Loading...</p>;
                             <th className="px-4 py-3 text-left">Name</th>
                             <th className="px-4 py-3 text-left">Status</th>
                             <th className="px-4 py-3 text-left">Version</th>
-                            {role === "Admin" && <th className="px-4 py-3 text-left">Actions</th>}
+                            {(role==="Admin" || position != "Developer" && position != "Team Leader") && <th className="px-4 py-3 text-left">Actions</th>}
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
@@ -150,20 +150,18 @@ if (loading) return <p>Loading...</p>;
                                 <td className="px-4 py-3 font-medium text-gray-800"><Link to={`/products/${p.id}`} className="text-blue-600 hover:underline">{p.name} </Link></td>
                                 <td className="px-4 py-3"> <span className="inline-block rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs"> {p.status}</span> </td>
                                 <td className="px-4 py-3 text-gray-600">{p.version}</td>
-                                
-                                {role === "Admin" && (
+                                {(role==="Admin" || position != "Developer" && position != "Team Leader") &&
                                     <td className="px-4 py-3 space-x-2">
                                         <button onClick={() => handleEdit(p)} className="rounded bg-amber-500 px-3 py-1 text-white text-xs hover:bg-amber-600"> Edit </button>
                                         <button onClick={() => handleDelete(p.id)} className="rounded bg-red-600 px-3 py-1 text-white text-xs hover:bg-red-700"> Delete </button>
-                                    </td>
-                                )}
+                                    </td>}
                             </tr>
                         ))}
                     </tbody>
                 </table>
             </div>
 
-            {role === "Admin" && (
+            {(role==="Admin" || position != "Developer" && position != "Team Leader") && (
                 <form onSubmit={handleSubmit} className="mt-8 bg-white rounded-lg border border-gray-200 shadow-sm p-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">
                         {editId ? "Edit Product" : "Add Product"}
@@ -198,7 +196,7 @@ if (loading) return <p>Loading...</p>;
                     </div>
                 </form>)}
                 
-                {role === "Admin" && (
+                {(role==="Admin" || position === "CEO" || position ==="Manager") && (
     <form onSubmit={handleAssignTeam} className="mt-8 bg-white rounded-lg border border-gray-200 shadow-sm p-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-4">Assign Team to Product</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -233,7 +231,7 @@ if (loading) return <p>Loading...</p>;
         </button>
     </form>
 )}
-{role === "Admin" && (
+{(role==="Admin" || position != "Developer") && (
     <form onSubmit={handleCreateModule} className="mt-8 bg-white rounded-lg border border-gray-200 shadow-sm p-6">
         <h2 className="text-lg font-semibold text-gray-800 mb-4">Add Module to Product</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

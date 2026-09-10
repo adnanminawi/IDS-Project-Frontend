@@ -5,7 +5,7 @@ import { getTeams, createTeam, updateTeam, deleteTeam } from "../api/teams";
 import { useAuth } from "../context/AuthContext";
 
 export function Teams() {
-    const { role } = useAuth();
+    const { role, position } = useAuth();
 
     const [teams, setTeams] = useState<Team[]>([]);
     const [loading, setLoading] = useState(true);
@@ -64,14 +64,14 @@ export function Teams() {
                     <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
                         <tr>
                             <th className="px-4 py-3 text-left">Name</th>
-                            {role === "Admin" && <th className="px-4 py-3 text-left">Actions</th>}
+                            {(role === "Admin" || position ==="Manager") && <th className="px-4 py-3 text-left">Actions</th>}
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-100">
                         {teams.map((t) => (
                             <tr key={t.id} className="hover:bg-gray-50">
                                 <td className="px-4 py-3 font-medium"><Link to={`/teams/${t.id}`} className="text-blue-600 hover:underline">{t.name}</Link></td>
-                                {role === "Admin" && (
+                                {(role === "Admin" || position ==="Manager") && (
                                     <td className="px-4 py-3 space-x-2">
                                         <button onClick={() => handleEdit(t)} className="rounded bg-amber-500 px-3 py-1 text-white text-xs hover:bg-amber-600"> Edit </button>
                                         <button onClick={() => handleDelete(t.id)} className="rounded bg-red-600 px-3 py-1 text-white text-xs hover:bg-red-700" > Delete </button> </td>
@@ -82,7 +82,7 @@ export function Teams() {
                 </table>
             </div>
 
-            {role === "Admin" && (
+            {(  role === "Admin" || position === "Manager" ) && (
                 <form onSubmit={handleSubmit} className="mt-8 bg-white rounded-lg border border-gray-200 shadow-sm p-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">
                         {editId ? "Edit Team" : "Add Team"}

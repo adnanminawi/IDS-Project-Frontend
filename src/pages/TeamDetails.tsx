@@ -8,9 +8,9 @@ import { useAuth } from "../context/AuthContext";
 export function TeamDetails() {
     const { id } = useParams();
     const teamId = Number(id);
-    const { role } = useAuth();
-
-    const [team, setTeam] = useState<Team | null>(null);
+    const { role, position, team } = useAuth();
+    const isMyTeam = team === teamId;
+    const [teams, setTeams] = useState<Team | null>(null);
     const [members, setMembers] = useState<TeamMember[]>([]);
     const [loading, setLoading] = useState(true);
     const [editId, setEditId] = useState<number | null>(null);
@@ -21,7 +21,7 @@ export function TeamDetails() {
     async function load() {
         const t = await getTeam(teamId);
         const m = await getTeamMembers(teamId);
-        setTeam(t);
+        setTeams(t);
         setMembers(m);
         setLoading(false);
     }
@@ -70,13 +70,13 @@ export function TeamDetails() {
     }
 
     if (loading) return <p className="p-6 text-gray-500">Loading...</p>;
-    if (!team) return <p className="p-6">Team not found.</p>;
+    if (!teams) return <p className="p-6">Team not found.</p>;
     const teamLeader = members.find((m) => m.roleInTeam === "Team Leader");
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">
             <Link to="/teams" className="text-blue-600 hover:underline">← Back to Teams</Link>
-            <h1 className="text-2xl font-bold text-gray-800">{team.name}</h1>
+            <h1 className="text-2xl font-bold text-gray-800">{teams.name}</h1>
 
             <section className="bg-white rounded-lg border border-gray-200 shadow-sm p-4">
                 <h2 className="font-semibold text-gray-800 mb-3">Members ({members.length})</h2>
@@ -93,7 +93,8 @@ export function TeamDetails() {
                                 <th className="px-3 py-2 text-left">Email</th>
                                 <th className="px-3 py-2 text-left">Status</th>
 
-                                {role === "Admin" && <th className="px-3 py-2 text-left">Actions</th>}
+                                {(role === "Admin" || position ==="Manager" || position != "Developer" && isMyTeam) && 
+                                <th className="px-3 py-2 text-left">Actions</th>}
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -105,7 +106,7 @@ export function TeamDetails() {
                                     <td className="px-3 py-2 text-gray-600">{m.department}</td>
                                     <td className="px-3 py-2 text-gray-600">{m.email}</td>
                                     <td className="px-3 py-2 text-gray-600">{m.status}</td>
-                                    {role === "Admin" && (
+                                    {(role === "Admin" || position ==="Manager" || position != "Developer" && isMyTeam) && (
                                         <td className="px-3 py-2 space-x-2">
                                             <button onClick={() => handleEdit(m)} className="rounded bg-amber-500 px-2 py-1 text-white text-xs hover:bg-amber-600">Edit</button>
                                             <button onClick={() => handleDelete(m.id)} className="rounded bg-red-600 px-2 py-1 text-white text-xs hover:bg-red-700">Delete</button>
@@ -118,7 +119,7 @@ export function TeamDetails() {
                 )}
             </section>
 
-            {role === "Admin" && (
+            {(role === "Admin" || position ==="Manager" || position != "Developer" && isMyTeam) && (
                 <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 shadow-sm p-6">
                     <h2 className="text-lg font-semibold text-gray-800 mb-4">
                         {editId ? "Edit Member" : "Add Member"}

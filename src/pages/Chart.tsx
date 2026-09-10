@@ -46,12 +46,16 @@ export function Chart() {
     
     let root: TeamMember | undefined;
 
-    if (position === "Developer" || position === "Team Leader") {
-        root = people.find((p) => p.team_id === team && p.position === "Team Leader");
+    if (position === "Developer") {
+    root = people.find((p) => p.team_id === team && p.position === "Team Leader");
+
+    } else if (position === "Team Leader") {
+    const leader = people.find((p) => p.team_id === team && p.position === "Team Leader");
+    root = people.find((p) => p.id === leader?.managerId);
+
     } else {
-        // CEO, Manager, Project Manager, or admin (no position) → full tree from the CEO
-        root = people.find((p) => p.managerId == null);
-    }
+    root = people.find((p) => p.managerId == null);
+}
 
 
     if (!root) return <p className="p-6">No organization structure found for your role.</p>;

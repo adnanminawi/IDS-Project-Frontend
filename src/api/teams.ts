@@ -1,5 +1,5 @@
     import api from "./axios";
-    import { type Team, type TeamMember, type CreateTeam} from "../types";
+    import { type Team, type TeamMember, type CreateTeam, type Responsibility} from "../types";
 
 export async function getTeams(): Promise<Team[]> {
     const res = await api.get<Team[]>("/teams");
@@ -22,4 +22,8 @@ export async function deleteTeam(id: number): Promise<void> {
 export async function getTeamMembers(id: number): Promise<TeamMember[]> {
     const res = await api.get<TeamMember[]>(`/teams/${id}/members`);
     return res.data;
+}
+export async function getTeamResponsibilities(id:number): Promise<Responsibility[]> {
+    const res = await api.get<Responsibility[]>(`/teams/${id}/responsibilities`);
+    return res.data;    
 }
