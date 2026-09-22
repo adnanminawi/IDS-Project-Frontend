@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { type Team, type CreateTeam } from "../types";
 import { getTeams, createTeam, updateTeam, deleteTeam } from "../api/teams";

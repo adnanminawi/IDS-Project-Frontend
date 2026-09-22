@@ -1,4 +1,4 @@
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { type CreateProduct, type Product , type Team, type CreateModule} from "../types";
 import { createProduct, deleteProduct, getProducts, updateProduct, assignTeam, createModule } from "../api/products";
 import { getTeams } from "../api/teams";
