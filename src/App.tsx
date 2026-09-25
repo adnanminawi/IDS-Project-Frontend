@@ -13,8 +13,10 @@ import { Users } from "./pages/Users";
 import { Dashboard } from "./pages/Dashboard";
 import { DeploymentDetails } from "./pages/DeploymentDetails";
 import { Chart } from "./pages/Chart";
+import { Analytics } from "@vercel/analytics/react";
 function App() {
   return (
+    <>
     <Routes>
       <Route path="/login" element={<Login />} />
 
@@ -75,6 +77,8 @@ function App() {
     <ProtectedRoute><Layout><DeploymentDetails /></Layout></ProtectedRoute>
 } />
     </Routes>
+    <Analytics />
+    </>
   );
 }
 
